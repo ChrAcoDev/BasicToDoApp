@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import TodoClass from './classes/Todo';
+import InputForm from './components/InputForm';
+import Todos from './components/Todos';
 
 function App() {
+  const [todoList, setTodoList] = useState<TodoClass[]>([]);
+
+  const onAddTodo = (todo: TodoClass) => {
+    setTodoList((prev => [...prev, todo]));
+  }
+
+  const onDeleteTodo = (id: number) => {
+    setTodoList((todoList.filter(todo => todo.id !== id)));
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <InputForm onAddTodo={onAddTodo} />
+      <Todos todoList={todoList} onDeleteTodo={onDeleteTodo} />
     </div>
   );
 }
