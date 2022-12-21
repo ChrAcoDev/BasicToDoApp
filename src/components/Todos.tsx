@@ -6,16 +6,18 @@ import Card from "./UI/Card";
 
 const Todos: FC<{
     todoList: TodoClass[],
-    onDeleteTodo: (id: number) => void
 }> = props => {
-
     return <>
         {props.todoList.length > 0 && <div className={classes.list}>
             {props.todoList.map((todo: TodoClass) => {
                 return (<>
                     <div key={todo.id} className={classes.listItem}>
                         <Card>
-                            <Todo onDeleteTodo={props.onDeleteTodo} id={todo.id} text={todo.text} />
+                            <Todo
+                                id={todo.id}
+                                text={todo.text}
+                                isCompleted={todo.isCompleted}
+                            />
                         </Card>
                     </div>
                 </>);

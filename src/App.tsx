@@ -1,24 +1,17 @@
-import { useState } from 'react';
 import './App.css';
-import TodoClass from './classes/Todo';
 import InputForm from './components/InputForm';
+import TodoHandler from './components/TodoHandler';
 import Todos from './components/Todos';
+import useAppSelector from './hooks/useAppSelector';
 
 function App() {
-  const [todoList, setTodoList] = useState<TodoClass[]>([]);
-
-  const onAddTodo = (todo: TodoClass) => {
-    setTodoList((prev => [...prev, todo]));
-  }
-
-  const onDeleteTodo = (id: number) => {
-    setTodoList((todoList.filter(todo => todo.id !== id)));
-  }
+  const todoList = useAppSelector(state => state.todoReducer.todoList);
 
   return (
     <div className="App">
-      <InputForm onAddTodo={onAddTodo} />
-      <Todos todoList={todoList} onDeleteTodo={onDeleteTodo} />
+      <InputForm />
+      <TodoHandler />
+      <Todos todoList={todoList} />
     </div>
   );
 }

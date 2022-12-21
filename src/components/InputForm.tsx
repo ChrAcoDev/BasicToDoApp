@@ -1,11 +1,13 @@
 import { FC, FormEvent, SyntheticEvent, useState } from "react";
-import TodoClass from "../classes/Todo";
 import Card from "./UI/Card";
 import classes from './styles/InputForm.module.css';
+import { storeActions } from '../store/index';
+import TodoClass from "../classes/Todo";
+import useAppDispatch from "../hooks/useAppDispatch";
 
-const InputForm: FC<{
-    onAddTodo: (todo: TodoClass) => void
-}> = props => {
+
+const InputForm: FC<{}> = () => {
+    const dispatch = useAppDispatch();
     const MAX_CHARACTERS = 2000;
     const [todoName, setTodoName] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
@@ -17,7 +19,7 @@ const InputForm: FC<{
     const onSubmitHandler = (event: SyntheticEvent) => {
         event.preventDefault();
         if (todoName.trim().length > 0) {
-            props.onAddTodo(new TodoClass(todoName));
+            dispatch(storeActions.add(new TodoClass(todoName)));
             setTodoName("");
             setErrorMsg("");
         } else {

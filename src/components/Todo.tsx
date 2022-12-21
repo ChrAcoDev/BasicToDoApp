@@ -1,26 +1,26 @@
-import { FC, useState } from "react";
+import { FC } from "react";
+import useAppDispatch from "../hooks/useAppDispatch";
+import { storeActions } from "../store";
 import classes from './styles/Todo.module.css';
 
 const Todo: FC<{
     id: number,
     text: string,
-    onDeleteTodo: (id: number) => void
+    isCompleted: boolean,
 }> = (props) => {
-
-    const [isCompleted, setIsCompleted] = useState(false);
-
+    const dispatch = useAppDispatch();
     const onClickDeleteHandler = () => {
-        props.onDeleteTodo(props.id);
+        dispatch(storeActions.remove(props.id));
     }
 
     const onClickCompleteHandler = () => {
-        setIsCompleted(!isCompleted);
+        dispatch(storeActions.complete(props.id));
     }
 
     return (<>
-        <p className={`${classes.text} ${isCompleted ? classes.completedTask : ''}`}>{props.text}</p>
+        <p className={`${classes.text} ${props.isCompleted ? classes.completedTask : ''}`}>{props.text}</p>
         <div>
-            <button className={`${classes.button} ${isCompleted ? classes.buttonUndo : classes.buttonComplete}`} onClick={onClickCompleteHandler}>{isCompleted ? 'Undo' : 'Complete'}</button>
+            <button className={`${classes.button} ${props.isCompleted ? classes.buttonUndo : classes.buttonComplete}`} onClick={onClickCompleteHandler}>{props.isCompleted ? 'Undo' : 'Complete'}</button>
             <button className={`${classes.button} ${classes.buttonDelete}`} onClick={onClickDeleteHandler}>Delete</button>
         </div>
     </>);
