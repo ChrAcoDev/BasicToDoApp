@@ -1,6 +1,6 @@
 import { FC } from "react";
 import useAppDispatch from "../hooks/useAppDispatch";
-import { storeActions } from "../store";
+import { storeActions } from "../data";
 import Card from "./UI/Card";
 
 const TodoHandler: FC<{

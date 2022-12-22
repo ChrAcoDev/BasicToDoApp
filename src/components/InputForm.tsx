@@ -1,7 +1,7 @@
 import { FC, FormEvent, SyntheticEvent, useState } from "react";
 import Card from "./UI/Card";
 import classes from './styles/InputForm.module.css';
-import { storeActions } from '../store/index';
+import { storeActions } from '../data/index';
 import TodoClass from "../classes/Todo";
 import useAppDispatch from "../hooks/useAppDispatch";
 
