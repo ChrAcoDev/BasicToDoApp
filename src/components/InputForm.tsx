@@ -1,19 +1,27 @@
-import { FC, FormEvent, SyntheticEvent, useState } from "react";
+import { ChangeEvent, FC, SyntheticEvent, useState } from "react";
+
 import Card from "./UI/Card";
-import classes from './styles/InputForm.module.css';
+
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+
 import { storeActions } from '../data/index';
+
 import TodoClass from "../classes/Todo";
+
 import useAppDispatch from "../hooks/useAppDispatch";
+import CONSTANTS from "../CONSTANTS/APP_CONSTANTS";
 
 
 const InputForm: FC<{}> = () => {
     const dispatch = useAppDispatch();
-    const MAX_CHARACTERS = 2000;
     const [todoName, setTodoName] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
 
-    const onTodoNameChangeHandler = (event: FormEvent<HTMLInputElement>) => {
-        setTodoName(event.currentTarget.value);
+
+    const onTodoNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        setTodoName(event.target.value);
     }
 
     const onSubmitHandler = (event: SyntheticEvent) => {
@@ -21,38 +29,38 @@ const InputForm: FC<{}> = () => {
         if (todoName.trim().length > 0) {
             dispatch(storeActions.add(new TodoClass(todoName)));
             setTodoName("");
-            setErrorMsg("");
+            setErrorMsg("")
         } else {
-            setErrorMsg("Todo cannot be blank");
+            setErrorMsg("To Do cannot be blank");
         }
     }
 
+    const handleCloseAlert = () => {
+        setErrorMsg("")
+    };
+
     return (<Card>
-        <div className={classes.form}>
-            <form onSubmit={onSubmitHandler}  >
-                <label
-                    htmlFor='todo'
-                >To Do:</label> <br />
-                <div className={classes.input}>
-                    <input
-                        className={classes.text}
-                        type='text'
-                        maxLength={MAX_CHARACTERS}
-                        value={todoName}
-                        id='todo'
-                        name='todo'
-                        onChange={onTodoNameChangeHandler}
-                    />
-                    <input
-                        className={classes.submit}
-                        type='submit'
-                        value='Submit'
-                    />
-                </div>
-            </form>
-            <p id={classes.remainingChars}>Remaining characters: {MAX_CHARACTERS - todoName.length}</p>
-            {errorMsg && <p className={classes.errorMsg}>{errorMsg}</p>}
-        </div>
+        {errorMsg && <Alert variant="danger" onClose={handleCloseAlert} dismissible>
+            <p>{errorMsg}</p>
+        </Alert>}
+        <Form onSubmit={onSubmitHandler}>
+            <Form.Group controlId="validationCustom01">
+                <Form.Label>To Do:</Form.Label>
+                <Form.Control
+                    type="text"
+                    value={todoName}
+                    placeholder="What do you need to do?"
+                    maxLength={CONSTANTS.MAX_CHARACTERS}
+                    onChange={onTodoNameChangeHandler}
+                />
+                <Form.Text >
+                    Remaining characters: {CONSTANTS.MAX_CHARACTERS - todoName.length}
+                </Form.Text>
+            </Form.Group>
+            <Button variant="primary" type="submit">
+                Submit
+            </Button>
+        </Form>
     </Card>);
 }
 
