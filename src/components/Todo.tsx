@@ -6,7 +6,9 @@ const Todo: FC<{
     isCompleted: boolean,
 }> = (props) => {
     return (<>
-        <p >{props.text}</p>
+        <p style={props.isCompleted ? { textDecoration: "line-through" } : {}}>
+            {props.text}
+        </p>
     </>);
 }
 

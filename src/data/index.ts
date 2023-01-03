@@ -19,14 +19,12 @@ const todoSlice = createSlice({
         remove(state: InitState, action: PayloadAction<number[]>) {
             state.todoList = state.todoList.filter(todo => { return !action.payload.includes(todo.id) });
         },
-        complete(state: InitState, action: PayloadAction<number[]>) {
+        complete(state: InitState, action: PayloadAction<number>) {
             let newArr = [...state.todoList];
-            newArr.forEach((todo) => {
-                if (action.payload.includes(todo.id)) {
-                    todo.isCompleted = true;
-                }
-            });
+            let index = state.todoList.findIndex(todo => todo.id === action.payload);
+            newArr[index].isCompleted = !state.todoList[index].isCompleted;
             state.todoList = newArr;
+
         },
         removeAll(state: InitState) {
             state.todoList = [];
