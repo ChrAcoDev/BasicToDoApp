@@ -1,12 +1,16 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import Todo from '../classes/Todo';
+import Cookie from 'universal-cookie';
+
+const cookie = new Cookie();
+const savedTodos = cookie.get('savedTodos');
 
 type InitState = {
     todoList: Todo[]
 }
 
 const initState: InitState = {
-    todoList: []
+    todoList: (savedTodos && savedTodos.length > 0) ? savedTodos : []
 };
 
 const todoSlice = createSlice({
@@ -35,7 +39,10 @@ const todoSlice = createSlice({
                 newArr[i].isCompleted = true;
             }
             state.todoList = newArr;
-        }
+        },
+        save(state: InitState) {
+            cookie.set('savedTodos', state.todoList);
+        },
     }
 });
 

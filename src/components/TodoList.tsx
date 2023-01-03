@@ -8,7 +8,7 @@ import Button from "./UI/Button";
 import Card from "./UI/Card";
 
 import TodoClass from "../classes/Todo";
-import { storeActions } from "../data";
+import store, { storeActions } from "../data";
 import useAppDispatch from "../hooks/useAppDispatch";
 
 import Todo from "./Todo";
@@ -48,9 +48,14 @@ const Todos: FC<{
         dispatch(storeActions.completeAll());
     }
 
+    const handleSave = () => {
+        dispatch(storeActions.save());
+    }
+
     return <>
         <Card >
             <Button text="Complete All" variant="primary" onClick={handleCompleteAll} />
+            <Button text="Save" variant="success" onClick={handleSave} />
             {(selectedTodoIDs.length > 0) && <Button text="Delete" variant="danger" onClick={deleteSelectedTodos} />}
             {(selectedTodoIDs.length > 0) && <Button text='Delete All' variant="danger" onClick={handleDeleteAll} />}
         </Card>
